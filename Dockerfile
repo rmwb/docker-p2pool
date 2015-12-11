@@ -6,8 +6,6 @@ MAINTAINER TheLazieR <thelazier@gmail.com>
 LABEL description="Dockerized P2Pool-Dash"
 
 RUN apk --no-cache add \
-  binutils \
-  curl \
   git \
   perl \
   python \
@@ -15,7 +13,6 @@ RUN apk --no-cache add \
   py-twisted \
   gcc \
   g++
-# python-zope.interface python-twisted-web
 
 WORKDIR /p2pool
 ENV P2POOL_DASH_HOME /p2pool/p2pool-dash
@@ -33,7 +30,15 @@ RUN python setup.py install
 WORKDIR $P2POOL_DASH_HOME/dash-subsidy
 RUN python setup.py install
 
-EXPOSE 7903
+# Remove to reduce size
+RUN apk -v del \
+  git \
+  python-dev \
+  perl \
+  gcc \
+  g++
+
+EXPOSE 7903 17903
 
 ENV DASH_RPCUSER dashrpc
 ENV DASH_RPCPASSWORD 4C3NET7icz9zNE3CY1X7eSVrtpnSb6KcjEgMJW3armRV
@@ -42,10 +47,12 @@ ENV DASH_RPCPORT 9998
 ENV DASH_P2PPORT 9999
 ENV DASH_FEE 0
 ENV DASH_DONATION 0
+ENV DASH_TESTNET 0
 
 # Default arguments, can be overriden
 WORKDIR $P2POOL_DASH_HOME
 CMD python run_p2pool.py \
+  --testnet $DASH_TESTNET \
   --give-author $DASH_DONATION \
   -f $DASH_FEE \
   --no-bugreport --disable-advertise \
