@@ -1,22 +1,26 @@
-# Dockerfile for Dashd
-# https://www.dashpay.io/
+# Dockerfile for P2Pool-Dash Server
+# https://www.dash.org/
 
-FROM debian:jessie
+FROM alpine
 MAINTAINER TheLazieR <thelazier@gmail.com>
 LABEL description="Dockerized P2Pool-Dash"
 
-RUN apt-get update \
-  && apt-get install -y binutils curl git python-zope.interface python-twisted python-twisted-web python-dev gcc g++
+RUN apk --no-cache add \
+  binutils \
+  curl \
+  git \
+  perl \
+  python \
+  python-dev \
+  py-twisted \
+  gcc \
+  g++
+# python-zope.interface python-twisted-web
 
-ENV HOME /p2pool
-ENV USER p2pool
-ENV GROUP p2pool
-RUN /usr/sbin/useradd -s /bin/bash -m -d $HOME $USER
-
+WORKDIR /p2pool
 ENV P2POOL_DASH_HOME /p2pool/p2pool-dash
 ENV P2POOL_DASH_REPO https://github.com/dashpay/p2pool-dash
 
-WORKDIR $HOME
 RUN git clone -b master $P2POOL_DASH_REPO $P2POOL_DASH_HOME
 
 WORKDIR $P2POOL_DASH_HOME
@@ -29,10 +33,7 @@ RUN python setup.py install
 WORKDIR $P2POOL_DASH_HOME/dash-subsidy
 RUN python setup.py install
 
-RUN chown $USER:$GROUP -R $HOME
-USER p2pool
-VOLUME ["/p2pool"]
-EXPOSE 7903 
+EXPOSE 7903
 
 ENV DASH_RPCUSER dashrpc
 ENV DASH_RPCPASSWORD 4C3NET7icz9zNE3CY1X7eSVrtpnSb6KcjEgMJW3armRV
