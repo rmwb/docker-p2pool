@@ -8,13 +8,13 @@ case "$1" in
     "$docker" pull rossbennetts/docker-p2pool:latest
     ;;
   start)
-    "$docker" run -d -p 0.0.0.0:7903:7903 --env-file=env-mainnet --name p2pool rossbennetts/docker-p2pool:latest
+    "$docker" run -d -p 0.0.0.0:9332:9332 --env-file=env-mainnet --name p2pool rossbennetts/docker-p2pool:latest
     ;;
   stop)
     "$docker" stop p2pool
     ;;
   start-testnet)
-    "$docker" run -d -p 0.0.0.0:17903:17903 --env-file=env-testnet --name p2pool-testnet rossbennetts/docker-p2pool:latest
+    "$docker" run -d -p 0.0.0.0:19332:19332 --env-file=env-testnet --name p2pool-testnet rossbennetts/docker-p2pool:latest
     ;;
   stop-testnet)
     "$docker" stop p2pool-testnet
