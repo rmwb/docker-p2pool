@@ -1,9 +1,9 @@
-# Dockerfile for P2Pool-Dash Server
-# https://www.dash.org/
+# Dockerfile for P2Pool Server
+# http://p2pool.in/
 
 FROM alpine
-MAINTAINER TheLazieR <thelazier@gmail.com>
-LABEL description="Dockerized P2Pool-Dash"
+MAINTAINER rossbennetts <ross.bennetts@gmail.com>
+LABEL description="Dockerised P2Pool"
 
 RUN apk --no-cache add \
   git \
@@ -15,20 +15,14 @@ RUN apk --no-cache add \
   g++
 
 WORKDIR /p2pool
-ENV P2POOL_DASH_HOME /p2pool/p2pool-dash
-ENV P2POOL_DASH_REPO https://github.com/dashpay/p2pool-dash
+ENV P2POOL_HOME /p2pool/p2pool
+ENV P2POOL_REPO https://github.com/forrestv/p2pool
 
-RUN git clone -b master $P2POOL_DASH_REPO $P2POOL_DASH_HOME
+RUN git clone -b master $P2POOL_REPO $P2POOL_HOME
 
-WORKDIR $P2POOL_DASH_HOME
+WORKDIR $P2POOL_HOME
 RUN git submodule init \
   && git submodule update
-
-WORKDIR $P2POOL_DASH_HOME/x11-hash
-RUN python setup.py install
-
-WORKDIR $P2POOL_DASH_HOME/dash-subsidy
-RUN python setup.py install
 
 # Remove to reduce size
 RUN apk -v del \
@@ -38,27 +32,27 @@ RUN apk -v del \
   gcc \
   g++
 
-EXPOSE 7903 17903
+EXPOSE 9332 9333
 
-ENV DASH_RPCUSER dashrpc
-ENV DASH_RPCPASSWORD 4C3NET7icz9zNE3CY1X7eSVrtpnSb6KcjEgMJW3armRV
-ENV DASH_RPCHOST 192.168.99.1
-ENV DASH_RPCPORT 9998
-ENV DASH_P2PPORT 9999
-ENV DASH_FEE 0
-ENV DASH_DONATION 0
-ENV DASH_TESTNET 0
+ENV BITCOIND_RPCUSER bitcoinrpc
+ENV BITCOIND_RPCPASSWORD 4C3NET7icz9zNE3CY1X8eSVrtpnSb6KcjEgMJW3armRV
+ENV BITCOIND_RPCHOST 192.168.99.1
+ENV BITCOIND_RPCPORT 8332
+ENV BITCOIND_P2PPORT 8333
+ENV P2POOL_FEE 0
+ENV P2POOL_DONATION 0
+ENV P2POOL_TESTNET 0
 
 # Default arguments, can be overriden
-WORKDIR $P2POOL_DASH_HOME
+WORKDIR $P2POOL_HOME
 CMD python run_p2pool.py \
-  --testnet $DASH_TESTNET \
-  --give-author $DASH_DONATION \
-  -f $DASH_FEE \
+  --testnet $P2POOL_TESTNET \
+  --give-author $P2POOL_DONATION \
+  -f $P2POOL_FEE \
   --no-bugreport --disable-advertise \
-  --dashd-address $DASH_RPCHOST \
-  --dashd-rpc-port $DASH_RPCPORT \
-  --dashd-p2p-port $DASH_P2PPORT \
-  $DASH_RPCUSER $DASH_RPCPASSWORD
+  --bitcoind-address $BITCOIND_RPCHOST \
+  --bitcoind-rpc-port $BITCOIND_RPCPORT \
+  --bitcoind-p2p-port $BITCOIND_P2PPORT \
+  $BITCOIND_RPCUSER $BITCOIND_RPCPASSWORD
 
 # End.
