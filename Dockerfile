@@ -41,7 +41,7 @@ ENV BITCOIND_RPCPORT 8332
 ENV BITCOIND_P2PPORT 8333
 ENV P2POOL_FEE 0
 ENV P2POOL_DONATION 0
-ENV P2POOL_TESTNET 0
+ENV BTC_ADDRESS 1KwmPhzawgCgLFgzpvW6rSkzRiLRbWNSKh
 
 # Default arguments, can be overriden
 WORKDIR $P2POOL_HOME
@@ -49,6 +49,7 @@ CMD python run_p2pool.py \
   --testnet $P2POOL_TESTNET \
   --give-author $P2POOL_DONATION \
   -f $P2POOL_FEE \
+  -a $BTC_ADDRESS \
   --no-bugreport --disable-advertise \
   --bitcoind-address $BITCOIND_RPCHOST \
   --bitcoind-rpc-port $BITCOIND_RPCPORT \
