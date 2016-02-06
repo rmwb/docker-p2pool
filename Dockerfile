@@ -49,7 +49,6 @@ CMD python run_p2pool.py \
   --give-author $P2POOL_DONATION \
   -f $P2POOL_FEE \
   -a $BTC_ADDRESS \
-  --no-bugreport --disable-advertise \
   --bitcoind-address $BITCOIND_RPCHOST \
   --bitcoind-rpc-port $BITCOIND_RPCPORT \
   --bitcoind-p2p-port $BITCOIND_P2PPORT \
