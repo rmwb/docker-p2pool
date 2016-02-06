@@ -46,7 +46,6 @@ ENV BTC_ADDRESS 1KwmPhzawgCgLFgzpvW6rSkzRiLRbWNSKh
 # Default arguments, can be overriden
 WORKDIR $P2POOL_HOME
 CMD python run_p2pool.py \
-  --testnet $P2POOL_TESTNET \
   --give-author $P2POOL_DONATION \
   -f $P2POOL_FEE \
   -a $BTC_ADDRESS \
