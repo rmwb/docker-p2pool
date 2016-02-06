@@ -8,25 +8,18 @@ case "$1" in
     "$docker" pull rossbennetts/docker-p2pool:latest
     ;;
   start)
-    "$docker" run -d -p 0.0.0.0:9332:9332 --env-file=env-mainnet --name p2pool rossbennetts/docker-p2pool:latest
+    "$docker" run -d -p 0.0.0.0:9332:9332 --env-file=env-p2pool --name p2pool rossbennetts/docker-p2pool:latest
     ;;
   stop)
     "$docker" stop p2pool
     ;;
-  start-testnet)
-    "$docker" run -d -p 0.0.0.0:19332:19332 --env-file=env-testnet --name p2pool-testnet rossbennetts/docker-p2pool:latest
-    ;;
-  stop-testnet)
-    "$docker" stop p2pool-testnet
-    ;;
 
   uninstall)
     "$docker" rm p2pool
-    "$docker" rm p2pool-testnet
     "$docker" rmi rossbennetts/docker-p2pool
     ;;
   *)
-    echo "Usage: $0 [install|start|stop|start-testnet|stop-testnet|uninstall]"
+    echo "Usage: $0 [install|start|stop|uninstall]"
     exit 1
     ;;
 esac
